@@ -4,7 +4,7 @@ import React from 'react'
 import {io} from 'socket.io-client'
 import Peer from 'simple-peer'
 
-let socket=io('http://192.168.1.248:5000')
+let socket=io('http://localhost:5000')
 
 class App extends React.Component{
  constructor(props){
