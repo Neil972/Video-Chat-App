@@ -142,6 +142,7 @@ class App extends React.Component{
           <p>
           <input type='button' value='allowVideoCamera' onClick={this.getVid}/>
           </p>
+          <h5>Both parties should exchange the random assigned Id's <br/> before calling and answering</h5>
           <p>
             <input type='button' value='call' onClick={this.call}/>
           </p>
