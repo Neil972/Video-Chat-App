@@ -120,36 +120,59 @@ class App extends React.Component{
   render(){
     return(
       <div className='App'>
-        <h1>Hi!</h1>
-        <h1>yourID:{`${this.state.yourID}`}</h1>
-        <h2><label for='txtArs'>Sent</label></h2>
-        <h2><textarea id='txtArS' onChange={this.updtSnt}></textarea></h2>
-        <p>
-          <h3><label for='rcvrID'>Reciever's ID</label></h3>
-          <input id='rcvrID' type='text' onChange={this.updtRcvrID}/>
-        </p>
-        <p><input type='button' value='Send-Message' onClick={this.sndMsg}/></p>
-        <h2><label for='txtArR'>Recieved</label></h2>
-        <h2>{`${this.state.recieved}`}</h2>
-        <h3></h3>
-        <p>
-          <video ref={this.clientVidRef}>
+          <div 
+            className='avatar air'
+            onClick={
+              async ()=>{
+                try {
+                  let copiedText= await navigator.clipboard.writeText(this.state.yourID??'')
+                } catch (error) {
+                  console.error(error)
+                }
+              }
+            }
+          >
+            <div className='tooltip ripple'>
+              <h1>Hi!!</h1>
+              <span class="tooltiptext">{`${this.state.yourID}`}</span>
+            </div>
+          </div>
+          <div style={{width:"fit-content"}}>
+            <h2><label for='txtArs'>Type here</label></h2>
+            <h2>
+              <textarea id='txtArS' 
+              style={{
+                height:"50vh",
+                width:"50vw"
+              }} 
+              onChange={this.updtSnt}></textarea></h2>
+            <p>
+              <h3><label for='rcvrID'>Reciever's ID</label></h3>
+              <input id='rcvrID' type='text' onChange={this.updtRcvrID}/>
+            </p>
+            <p><input type='button' value='Send-Message' onClick={this.sndMsg}/></p>
+            <h2><label for='txtArR'>Recieved</label></h2>
+            <h2>{`${this.state.recieved}`}</h2>
+            <h3></h3>
+            <p>
+              <video ref={this.clientVidRef}>
 
-          </video>
+              </video>
 
-          <video ref={this.recieverVidRef}></video>
+              <video ref={this.recieverVidRef}></video>
 
-          <p>
-          <input type='button' value='allowVideoCamera' onClick={this.getVid}/>
-          </p>
-          <h5>Both parties should exchange the random assigned Id's <br/> before calling and answering</h5>
-          <p>
-            <input type='button' value='call' onClick={this.call}/>
-          </p>
-          <p>
-            <input type='button' value='answer' onClick={this.answer}/>
-          </p>
-        </p>
+              <p>
+              <input type='button' value='allowVideoCamera' onClick={this.getVid}/>
+              </p>
+              <h5>Both parties should exchange the random assigned Id's <br/> before calling and answering</h5>
+              <p>
+                <input type='button' value='call' onClick={this.call}/>
+              </p>
+              <p>
+                <input type='button' value='answer' onClick={this.answer}/>
+              </p>
+            </p>
+          </div>
       </div>
     )
   }
