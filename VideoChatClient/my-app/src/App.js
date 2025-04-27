@@ -121,36 +121,52 @@ class App extends React.Component{
     return(
       <div className='App'>
           <div 
-            className='avatar air'
-            onClick={
-              async ()=>{
-                try {
-                  let copiedText= await navigator.clipboard.writeText(this.state.yourID??'')
-                } catch (error) {
-                  console.error(error)
+            style={{
+              display:"flex",
+              justifyContent:"space-between",
+              flexWrap:"wrap",
+              padding:"10px"
+            }}>
+            <div 
+              className='avatar air'
+              onClick={
+                async ()=>{
+                  try {
+                    let copiedText= await navigator.clipboard.writeText(this.state.yourID??'')
+                  } catch (error) {
+                    console.error(error)
+                  }
                 }
               }
-            }
-          >
-            <div className='tooltip ripple'>
-              <h1>Hi!!</h1>
-              <span class="tooltiptext">{`${this.state.yourID}`}</span>
+            >
+              <div className='tooltip ripple'>
+                <h4>Hi!!</h4>
+                <span class="tooltiptext">{`${this.state.yourID}`}</span>
+              </div>
+            </div>
+            <div 
+              style={{
+                display:"flex",
+                justifyContent:"space-between",
+                gap:"15px",
+                alignItems:"center",
+                flexWrap:"wrap"
+              }}
+            >
+              {/* <h3><label for='rcvrID'>Reciever's ID</label></h3> */}
+              
+              <input type='button' value='call' onClick={this.call} style={{height:"30px"}}/>
+              
+              <input
+                id='rcvrID'
+                type='text' onChange={this.updtRcvrID} placeholder="Enter Reciever's ID"
+                style={{
+                  height: "30px"
+                }}
+              />
             </div>
           </div>
-          <div style={{width:"fit-content"}}>
-            <h2><label for='txtArs'>Type here</label></h2>
-            <h2>
-              <textarea id='txtArS' 
-              style={{
-                height:"50vh",
-                width:"50vw"
-              }} 
-              onChange={this.updtSnt}></textarea></h2>
-            <p>
-              <h3><label for='rcvrID'>Reciever's ID</label></h3>
-              <input id='rcvrID' type='text' onChange={this.updtRcvrID}/>
-            </p>
-            <p><input type='button' value='Send-Message' onClick={this.sndMsg}/></p>
+          <div>
             <h2><label for='txtArR'>Recieved</label></h2>
             <h2>{`${this.state.recieved}`}</h2>
             <h3></h3>
@@ -165,13 +181,43 @@ class App extends React.Component{
               <input type='button' value='allowVideoCamera' onClick={this.getVid}/>
               </p>
               <h5>Both parties should exchange the random assigned Id's <br/> before calling and answering</h5>
-              <p>
-                <input type='button' value='call' onClick={this.call}/>
-              </p>
+              
               <p>
                 <input type='button' value='answer' onClick={this.answer}/>
               </p>
             </p>
+            {/* <h2><label for='txtArs'>Type here</label></h2> */}
+            <h2
+              style={{
+                width:"80%",
+                margin:"auto"
+              }}
+            >
+              <textarea 
+                id='txtArS' 
+                placeholder='Type your message'
+                style={{
+                  height:"20vh",
+                  width:"100%"
+                }} 
+              onChange={this.updtSnt}></textarea>
+              <div
+              style={{
+                display:"flex",
+                justifyContent:"flex-end",
+                width:"100%",
+                position:"relative",
+                bottom:"38px",
+                zIndex:"2",
+              }}>
+              <input 
+                type='button' 
+                value='Send-Message' 
+                onClick={this.sndMsg} 
+              />
+
+              </div>
+            </h2>
           </div>
       </div>
     )
