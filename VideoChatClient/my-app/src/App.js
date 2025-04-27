@@ -5,6 +5,7 @@ import {io} from 'socket.io-client'
 import Peer from 'simple-peer'
 
 let socket=io('https://video-w1np.onrender.com')
+// let socket=io('https://super-adventure-p55qxx57w7jf49p-5000.app.github.dev/')
 
 class App extends React.Component{
  constructor(props){
@@ -33,7 +34,15 @@ class App extends React.Component{
     
     //sets up caller sdp as a state for reciever
     socket.on('callingUser',(callerSDP)=>{
-    this.setState({callerSignal:callerSDP.callsdpData})
+      this.setState((currState)=>{
+        currState.callerSignal=callerSDP.callsdpData
+        return currState.callerSignal
+      })
+
+      this.setState((currState)=>{
+        currState.recieverID=callerSDP.callerID
+        return currState.recieverID
+      })
     })
 
     //this.answerUser()
@@ -48,7 +57,7 @@ class App extends React.Component{
   updateSent(event){
    this.setState((argState)=>{
     argState.sent=event.target.value
-    return argState.event
+    return argState.sent
    })
 
    console.log('this.state.sent',this.state.sent)
@@ -87,7 +96,7 @@ class App extends React.Component{
     let peer=new Peer({initiator:true,trickle:false,stream:this.state.stream})
     
     peer.on('signal',(sdpData)=>{
-      socket.emit('callingUser',{recieverID:this.state.recieverID,callsdpData:sdpData})
+      socket.emit('callingUser',{recieverID:this.state.recieverID,callsdpData:sdpData,callerID:this.state.yourID})
     })
 
     peer.on('stream',(stream)=>{
@@ -98,6 +107,7 @@ class App extends React.Component{
     })
     //takes the reciever sdp and sets up the call
     socket.on('callAnswered',(signal)=>{
+      console.log('callAnswered',signal.recievesdpData)
       peer.signal(signal.recievesdpData)
     })
   }
@@ -183,7 +193,7 @@ class App extends React.Component{
               <h5>Both parties should exchange the random assigned Id's <br/> before calling and answering</h5>
               
               <p>
-                <input type='button' value='answer' onClick={this.answer}/>
+                <input type='button' value='answer' onClick={this.answer} disabled={this.state.callerSignal === ''}/>
               </p>
             </p>
             {/* <h2><label for='txtArs'>Type here</label></h2> */}

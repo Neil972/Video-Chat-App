@@ -3,10 +3,32 @@ let socketIO=require('socket.io')
 let app = express()
 let httpServer=require('http').createServer(app)
 
-let io= socketIO(httpServer,
-    {
-    cors:{origin:'*',methods:['GET','POST']}
-    }
+// Set CORS headers manually for all HTTP routes
+// app.use((req, res, next) => {
+
+//   console.log('setting cors for :',req.url)
+//   res.header('Access-Control-Allow-Origin', 'https://super-adventure-p55qxx57w7jf49p-3000.app.github.dev'); // front-end URL
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   res.header('Access-Control-Allow-Credentials', 'true');
+  
+  
+//     console.log('cors setup successfull')
+//     next();
+  
+// });
+
+
+let io= socketIO(
+  httpServer,
+  {
+    cors:{
+      origin:'*',
+      methods:['GET','POST'],
+      credentials:true
+    },
+    transport:['polling','websocket']
+  },
 )
 
 const PORT=5000
@@ -32,7 +54,8 @@ console.log('socket.id',socket.id)
   })
 
   socket.on('callingUser',(callInfo)=>{
-    io.to(callInfo.recieverID).emit('callingUser',{callsdpData:callInfo.callsdpData})
+    console.log('callInfo',callInfo)
+    io.to(callInfo.recieverID).emit('callingUser',{callsdpData:callInfo.callsdpData,callerID:callInfo.callerID})
   })
 
   socket.on('answeringCall',(recieveInfo)=>{
